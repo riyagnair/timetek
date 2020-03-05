@@ -1,4 +1,5 @@
 
+import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -107,7 +108,9 @@ class LoginScreen extends StatelessWidget{
           Padding(
             padding: const EdgeInsets.all(4),
             child: FlatButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.of(context).pushNamed(ROUTE_SIGN_UP);
+              },
               child: Text(
                 "Sign Up",
                 style: GoogleFonts.raleway(
