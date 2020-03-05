@@ -1,6 +1,7 @@
+import 'package:TimeTek/ui/signup_screen.dart';
+import 'package:TimeTek/ui/login_screen.dart';
+import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/material.dart';
-
-import 'ui/login_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,13 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFF8563EA),
         accentColor: Colors.white,
       ),
-      home: LoginScreen(),
+
+      initialRoute: ROUTE_LOGIN,
+      routes: {
+        ROUTE_LOGIN: (context) => LoginScreen(),
+        ROUTE_SIGN_UP: (context) => SignUpScreen(),
+      },
+
     );
   }
 }
