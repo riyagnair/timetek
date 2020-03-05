@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget{
   @override
@@ -18,7 +19,7 @@ class LoginScreen extends StatelessWidget{
             width: MediaQuery.of(context).size.width,
             child: Text(
               "TimeTek",
-              style: TextStyle(
+              style: GoogleFonts.raleway(
                 fontSize: 28,
                 fontWeight: FontWeight.bold
               ),
@@ -33,7 +34,7 @@ class LoginScreen extends StatelessWidget{
             width: MediaQuery.of(context).size.width,
             child: Text(
               "Welcome",
-              style: TextStyle(
+              style: GoogleFonts.raleway(
                 fontSize: 24,
                 fontWeight: FontWeight.bold
               ),
@@ -53,6 +54,7 @@ class LoginScreen extends StatelessWidget{
             ),
             child: TextField(
               keyboardType: TextInputType.emailAddress,
+              style: GoogleFonts.raleway(),
               decoration: InputDecoration(
                 hintText: "Email Address",
                 border: InputBorder.none,
@@ -82,7 +84,7 @@ class LoginScreen extends StatelessWidget{
                 alignment: Alignment.center,
                 child: Text(
                   "Login",
-                  style: TextStyle(
+                  style: GoogleFonts.raleway(
                     fontSize: 18,
                     color: Colors.white
                   ),
@@ -96,7 +98,7 @@ class LoginScreen extends StatelessWidget{
           // Don't have an account?
           Text(
             "Don't have an account?",
-            style: TextStyle(
+            style: GoogleFonts.raleway(
               fontSize: 16
             ),
           ),
@@ -108,7 +110,7 @@ class LoginScreen extends StatelessWidget{
               onPressed: (){},
               child: Text(
                 "Sign Up",
-                style: TextStyle(
+                style: GoogleFonts.raleway(
                   fontSize: 18,
                   color: Color(0xFF8563EA),
                   fontWeight: FontWeight.bold
