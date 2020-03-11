@@ -6,3 +6,4 @@ const Color color2 = Color(0xFF8563EA);
 
 const ROUTE_LOGIN = "/";
 const ROUTE_SIGN_UP = "/signup";
+const ROUTE_HOME = "/home";
