@@ -1,3 +1,4 @@
+import 'package:TimeTek/ui/home/home_screen.dart';
 import 'package:TimeTek/ui/signup_screen.dart';
 import 'package:TimeTek/ui/login_screen.dart';
 import 'package:TimeTek/util/constants.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         ROUTE_LOGIN: (context) => LoginScreen(),
         ROUTE_SIGN_UP: (context) => SignUpScreen(),
+        ROUTE_HOME: (context) => HomeScreen(),
       },
 
     );
