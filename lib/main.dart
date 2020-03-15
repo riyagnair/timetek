@@ -1,4 +1,5 @@
 import 'package:TimeTek/provider/assignment_data.dart';
+import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/home/home_screen.dart';
 import 'package:TimeTek/ui/login_screen.dart';
 import 'package:TimeTek/ui/signup_screen.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AssignmentDataProvider(),),
+        ChangeNotifierProvider(create: (_) => UserDataProvider(),),
         // space to add more providers later.
       ],
       child: MaterialApp(
