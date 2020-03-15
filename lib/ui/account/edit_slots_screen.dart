@@ -1,4 +1,5 @@
 import 'package:TimeTek/provider/assignment_data.dart';
+import 'package:TimeTek/provider/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ class _EditSlotsScreenState extends State<EditSlotsScreen> {
             icon: Icon(Icons.check, color: Colors.green,),
             onPressed: () {
               Provider.of<AssignmentDataProvider>(context, listen: false).saveWeeklySlots(_slots).then((_){
+                UserDataProvider().setSlots(true);
                 Navigator.of(context).pop();
               });
             },

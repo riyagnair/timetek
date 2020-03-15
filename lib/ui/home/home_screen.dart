@@ -1,4 +1,6 @@
+import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/account/my_account_screen.dart';
+import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +13,20 @@ class HomeScreen extends StatefulWidget{
 class _HomeScreenState extends State<HomeScreen> {
 
   int _selectedTabIndex = 0;
+
+  @override
+  void initState() {
+
+    Future.delayed(Duration.zero, (){
+      UserDataProvider().hasSlotsSet().then((set){
+        if(!set){
+          Navigator.of(context).pushNamed(ROUTE_EDIT_SLOTS);
+        }
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
