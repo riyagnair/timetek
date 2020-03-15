@@ -1,4 +1,5 @@
 
+import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,9 +25,7 @@ class MyAccountScreen extends StatelessWidget{
         ),
 
         // Spacer
-        SizedBox(
-          height: 8,
-        ),
+        SizedBox(height: 8),
 
         // User name
         Text(
@@ -37,8 +36,66 @@ class MyAccountScreen extends StatelessWidget{
           ),
         ),
 
+        // Spacer
+        SizedBox(height: 32),
+
+        // Button: Edit Availability Slots
+        _profileButton("Edit Availability Slots", (){}),
+
+        // Spacer
+        SizedBox(height: 16),
+
+        // Button: Log Out
+        _profileButton("Log out", () => _logout(context), showArrow: false),
+
+
       ],
     );
+  }
+
+  _profileButton(String title, Function action, {showArrow = true}){
+    return InkWell(
+      onTap: () => action(),
+      child: Container(
+        color: Colors.white.withOpacity(0.2),
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Text(
+              title,
+              style: GoogleFonts.raleway(
+                fontSize: 16
+              ),
+            ),
+            Spacer(),
+            Visibility(
+              visible: showArrow,
+              child: Icon(Icons.arrow_right)
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _logout(BuildContext context) async {
+    var result = await showDialog(
+      context: context,
+      builder: (ctx){
+        return AlertDialog(
+          title: Text("Log out?"),
+          content: Text("Do you want to log out of TimeTek?"),
+          actions: <Widget>[
+            FlatButton(child: Text("Yes"), onPressed: () => Navigator.of(ctx).pop(true)),
+            FlatButton(child: Text("No"), onPressed: () => Navigator.of(ctx).pop(false)),
+          ],
+        );
+      },
+    );
+
+    if(result){
+      Navigator.of(context).pushReplacementNamed(ROUTE_LOGIN);
+    }
   }
 
 }
