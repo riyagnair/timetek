@@ -96,6 +96,7 @@ class MyAccountScreen extends StatelessWidget{
 
     if(result){
       UserDataProvider().setLoggedIn(false).then((_){
+        UserDataProvider().clearAll();
         Navigator.of(context).pushReplacementNamed(ROUTE_LOGIN);
       });
     }

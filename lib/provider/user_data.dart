@@ -33,4 +33,8 @@ class UserDataProvider {
     return prefs.setBool(_KEY_HAS_SET_SLOTS, isSet) ?? true;
   }
 
+  Future<bool> clearAll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.clear();
+  }
 }
