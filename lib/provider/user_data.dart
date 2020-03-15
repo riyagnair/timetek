@@ -11,6 +11,7 @@ class UserDataProvider {
   UserDataProvider._internal();
 
   static const _KEY_IS_LOGGED_IN = "is_logged_in";
+  static const _KEY_HAS_SET_SLOTS = "slots_set";
 
   Future<bool> isLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -20,6 +21,16 @@ class UserDataProvider {
   Future<bool> setLoggedIn(bool loggedIn) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setBool(_KEY_IS_LOGGED_IN, loggedIn) ?? true;
+  }
+
+  Future<bool> hasSlotsSet() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_KEY_HAS_SET_SLOTS) ?? false;
+  }
+
+  Future<bool> setSlots(bool isSet) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_KEY_HAS_SET_SLOTS, isSet) ?? true;
   }
 
 }
