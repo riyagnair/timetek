@@ -1,3 +1,4 @@
+import 'package:TimeTek/ui/account/my_account_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
-          "Dashboard",
+          _getTabTitle(_selectedTabIndex),
           style: GoogleFonts.raleway(textStyle: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -27,9 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       body: Container(
-        child: Center(
-          child: Text("Body"),
-        ),
+        width: MediaQuery.of(context).size.width,
+        child: _getTabContents(_selectedTabIndex)
       ),
 
       bottomNavigationBar: BottomNavigationBar(
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Theme.of(context).primaryColor,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home"),),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), title: Text("Calendar"),),
+          BottomNavigationBarItem(icon: Icon(Icons.thumb_up), title: Text("Advisor"),),
           BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("History"),),
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("My Account"),),
         ],
@@ -58,5 +58,25 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Widget _getTabContents(int selectedIndex){
+    switch(selectedIndex){
+      case 0: return Center(child:Text("Home Screen"));
+      case 1: return Center(child:Text("Advisor Screen"));
+      case 2: return Center(child:Text("History Screen"));
+      case 3: return MyAccountScreen();
+      default: return Center(child:Text("Home Screen"),);
+    }
+  }
+
+  String _getTabTitle(int selectedIndex){
+    switch(selectedIndex){
+      case 0: return "Home";
+      case 1: return "Advisor";
+      case 2: return "History";
+      case 3: return "My Account";
+      default: return "Home";
+    }
   }
 }
