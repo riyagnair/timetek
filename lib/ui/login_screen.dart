@@ -1,4 +1,5 @@
 
+import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,6 +68,7 @@ class LoginScreen extends StatelessWidget{
           // Login Button
           FlatButton(
             onPressed: (){
+              UserDataProvider().setLoggedIn(true);
               Navigator.of(context).pushReplacementNamed(ROUTE_HOME);
             },
             shape: RoundedRectangleBorder(

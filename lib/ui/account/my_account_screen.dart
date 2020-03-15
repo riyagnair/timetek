@@ -1,4 +1,5 @@
 
+import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,9 @@ class MyAccountScreen extends StatelessWidget{
     );
 
     if(result){
-      Navigator.of(context).pushReplacementNamed(ROUTE_LOGIN);
+      UserDataProvider().setLoggedIn(false).then((_){
+        Navigator.of(context).pushReplacementNamed(ROUTE_LOGIN);
+      });
     }
   }
 
