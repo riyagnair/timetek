@@ -41,7 +41,7 @@ class MyAccountScreen extends StatelessWidget{
         SizedBox(height: 32),
 
         // Button: Edit Availability Slots
-        _profileButton("Edit Availability Slots", (){}),
+        _profileButton("Edit Availability Slots", () => Navigator.of(context).pushNamed(ROUTE_EDIT_SLOTS)),
 
         // Spacer
         SizedBox(height: 16),
