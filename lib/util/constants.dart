@@ -9,3 +9,4 @@ const ROUTE_LOGIN = "/login";
 const ROUTE_SIGN_UP = "/signup";
 const ROUTE_HOME = "/home";
 const ROUTE_EDIT_SLOTS = "/edit-slots";
+const ROUTE_ADD_ASSIGNMENT = "/add-assignment";
