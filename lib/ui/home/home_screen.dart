@@ -1,9 +1,11 @@
+import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/account/my_account_screen.dart';
 import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -21,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
       UserDataProvider().hasSlotsSet().then((set){
         if(!set){
           Navigator.of(context).pushNamed(ROUTE_EDIT_SLOTS);
+        } else {
+          Provider.of<AssignmentDataProvider>(context).loadAssignments();
         }
       });
     });
@@ -69,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
         visible: _selectedTabIndex != 3,
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
-          onPressed: (){},
+          onPressed: (){
+            Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT);
+          },
           child: Icon(Icons.add),
         ),
       ),
