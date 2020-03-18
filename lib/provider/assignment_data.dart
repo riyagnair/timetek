@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AssignmentDataProvider extends ChangeNotifier {
 
-  List<int> weeklySlots = [1,1,1,1,1,1,1];
+  List<int> weeklySlots = [0,0,0,0,0,0,0];
   List<Assignment> assignments;
 
   void setWeeklySlot(int weekDay, int minutes){
@@ -16,7 +16,7 @@ class AssignmentDataProvider extends ChangeNotifier {
 
   Future<List<int>> loadWeeklySlots() async {
     var prefs = await SharedPreferences.getInstance();
-    var slotsJson = prefs.getString("weekly_slots") ?? '''[1,1,1,1,1,1,1]''';
+    var slotsJson = prefs.getString("weekly_slots") ?? '''[0,0,0,0,0,0,0]''';
     weeklySlots = (jsonDecode(slotsJson) as List).map((e) => e as int).toList();
     return weeklySlots;
   }
@@ -49,6 +49,8 @@ class AssignmentDataProvider extends ChangeNotifier {
     assignments.add(assignment);
 
     await saveAssignments();
+
+    notifyListeners();
 
   }
 
