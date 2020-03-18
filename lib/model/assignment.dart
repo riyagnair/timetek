@@ -7,29 +7,45 @@ Assignment assignmentFromJson(String str) => Assignment.fromJson(json.decode(str
 String assignmentToJson(Assignment data) => json.encode(data.toJson());
 
 class Assignment {
+  String id;
   String title;
   String notes;
   DateTime startDate;
   DateTime endDate;
+  int durationMinutes;
+  int spentMinutes;
+  bool finished;
 
   Assignment({
+    this.id,
     this.title,
     this.notes,
     this.startDate,
     this.endDate,
+    this.durationMinutes,
+    this.spentMinutes,
+    this.finished,
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) => Assignment(
+    id: json["id"],
     title: json["title"],
     notes: json["notes"],
     startDate: DateTime.parse(json["startDate"]),
     endDate: DateTime.parse(json["endDate"]),
+    durationMinutes: json["duration_minutes"],
+    spentMinutes: json["spent_minutes"],
+    finished: json["finished"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "title": title,
     "notes": notes,
     "startDate": startDate.toIso8601String(),
     "endDate": endDate.toIso8601String(),
+    "duration_minutes": durationMinutes,
+    "spent_minutes": spentMinutes,
+    "finished": finished,
   };
 }

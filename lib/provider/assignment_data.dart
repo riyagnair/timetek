@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:TimeTek/model/assignment.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssignmentDataProvider extends ChangeNotifier {
 
   List<int> weeklySlots = [1,1,1,1,1,1,1];
+  List<Assignment> assignments;
 
   void setWeeklySlot(int weekDay, int minutes){
     weeklySlots[weekDay] = minutes;
@@ -23,6 +25,19 @@ class AssignmentDataProvider extends ChangeNotifier {
     var prefs = await SharedPreferences.getInstance();
     debugPrint(jsonEncode(slots));
     prefs.setString("weekly_slots", jsonEncode(slots));
+  }
+
+  Future<List<Assignment>> loadAssignments() async {
+    var prefs = await SharedPreferences.getInstance();
+    var json = prefs.getString("assignments") ?? "[]";
+    assignments = (jsonDecode(json) as List).map((e) => assignmentFromJson(e)).toList();
+    return assignments;
+  }
+
+  Future saveAssignments() async {
+    var prefs = await SharedPreferences.getInstance();
+    debugPrint(jsonEncode(assignments));
+    prefs.setString("assignments", jsonEncode(assignments));
   }
 
 
