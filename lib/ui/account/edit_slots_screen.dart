@@ -1,5 +1,6 @@
 import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/provider/user_data.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -110,7 +111,7 @@ class _EditSlotsScreenState extends State<EditSlotsScreen> {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Text(
-        "$day: ${_slots[index]} minutes",
+        "$day${_slots[index] == 0 ? "" : ": " + printDuration(Duration(minutes: _slots[index]))}",
         style: GoogleFonts.raleway(
           fontSize: 18
         ),
@@ -126,10 +127,12 @@ class _EditSlotsScreenState extends State<EditSlotsScreen> {
       ),
       child: Slider(
         min: 0,
-        max: 120,
-        divisions: 8,
+        max: 720,
+        divisions: 48,
         value: _slots[index].toDouble(),
-        onChanged: (value) => setState(() => _slots[index] = value.toInt())
+        onChanged: (value) => setState(() => _slots[index] = value.toInt()),
+        activeColor: Colors.deepPurpleAccent,
+        inactiveColor: Colors.white,
       ),
     );
   }
