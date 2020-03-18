@@ -30,7 +30,7 @@ class AssignmentDataProvider extends ChangeNotifier {
   Future<List<Assignment>> loadAssignments() async {
     var prefs = await SharedPreferences.getInstance();
     var json = prefs.getString("assignments") ?? "[]";
-    assignments = (jsonDecode(json) as List).map((e) => assignmentFromJson(e)).toList();
+    assignments = (jsonDecode(json) as List).map((e) => Assignment.fromJson(e)).toList();
     return assignments;
   }
 
@@ -38,6 +38,18 @@ class AssignmentDataProvider extends ChangeNotifier {
     var prefs = await SharedPreferences.getInstance();
     debugPrint(jsonEncode(assignments));
     prefs.setString("assignments", jsonEncode(assignments));
+  }
+
+  Future addAssignment(Assignment assignment) async {
+
+    if(assignments == null || assignments.isEmpty){
+      await loadAssignments();
+    }
+
+    assignments.add(assignment);
+
+    await saveAssignments();
+
   }
 
 
