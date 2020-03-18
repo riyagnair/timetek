@@ -7,7 +7,7 @@ Assignment assignmentFromJson(String str) => Assignment.fromJson(json.decode(str
 String assignmentToJson(Assignment data) => json.encode(data.toJson());
 
 class Assignment {
-  String id;
+  String id = DateTime.now().millisecondsSinceEpoch.toString();
   String title;
   String notes;
   DateTime startDate;
@@ -16,7 +16,9 @@ class Assignment {
   int spentMinutes;
   bool finished;
 
-  Assignment({
+  Assignment();
+
+  Assignment._new({
     this.id,
     this.title,
     this.notes,
@@ -27,7 +29,7 @@ class Assignment {
     this.finished,
   });
 
-  factory Assignment.fromJson(Map<String, dynamic> json) => Assignment(
+  factory Assignment.fromJson(Map<String, dynamic> json) => Assignment._new(
     id: json["id"],
     title: json["title"],
     notes: json["notes"],
