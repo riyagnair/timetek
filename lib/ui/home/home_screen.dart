@@ -8,24 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget{
+class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int _selectedTabIndex = 0;
 
   @override
   void initState() {
-
-    Future.delayed(Duration.zero, (){
-      UserDataProvider().hasSlotsSet().then((set){
-        if(!set){
+    Future.delayed(Duration.zero, () {
+      UserDataProvider().hasSlotsSet().then((set) {
+        if (!set) {
           Navigator.of(context).pushNamed(ROUTE_EDIT_SLOTS);
-        } else {
-          Provider.of<AssignmentDataProvider>(context).loadAssignments();
         }
       });
     });
@@ -35,46 +31,64 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    AssignmentDataProvider provider = Provider.of<AssignmentDataProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           _getTabTitle(_selectedTabIndex),
-          style: GoogleFonts.raleway(textStyle: TextStyle(
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
       ),
-
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: _getTabContents(_selectedTabIndex)
+        child: _getTabContents(_selectedTabIndex),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             _selectedTabIndex = index;
           });
+
+          switch (index) {
+            case 2:
+              debugPrint("Loading assmtns");
+              provider.loadAssignments();
+          }
         },
         currentIndex: _selectedTabIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home"),),
-          BottomNavigationBarItem(icon: Icon(Icons.thumb_up), title: Text("Advisor"),),
-          BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("History"),),
-          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("My Account"),),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text("Home"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.thumb_up),
+            title: Text("Advisor"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            title: Text("History"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text("My Account"),
+          ),
         ],
-
       ),
-
       floatingActionButton: Visibility(
         visible: _selectedTabIndex != 3,
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT);
           },
           child: Icon(Icons.add),
@@ -83,23 +97,35 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _getTabContents(int selectedIndex){
-    switch(selectedIndex){
-      case 0: return Center(child:Text("Home Screen"));
-      case 1: return Center(child:Text("Advisor Screen"));
-      case 2: return HistoryScreen();
-      case 3: return MyAccountScreen();
-      default: return Center(child:Text("Home Screen"),);
+  Widget _getTabContents(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return Center(child: Text("Home Screen"));
+      case 1:
+        return Center(child: Text("Advisor Screen"));
+      case 2:
+        return HistoryScreen();
+      case 3:
+        return MyAccountScreen();
+      default:
+        return Center(
+          child: Text("Home Screen"),
+        );
     }
   }
 
-  String _getTabTitle(int selectedIndex){
-    switch(selectedIndex){
-      case 0: return "Home";
-      case 1: return "Advisor";
-      case 2: return "History";
-      case 3: return "My Account";
-      default: return "Home";
+  String _getTabTitle(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return "Home";
+      case 1:
+        return "Advisor";
+      case 2:
+        return "History";
+      case 3:
+        return "My Account";
+      default:
+        return "Home";
     }
   }
 }
