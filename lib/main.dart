@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ROUTE_SPLASH: (context) => SplashScreen(),
           ROUTE_LOGIN: (context) => LoginScreen(),
           ROUTE_SIGN_UP: (context) => SignUpScreen(),
-          ROUTE_HOME: (context) => HomeScreen(),
+          ROUTE_APP_MAIN: (context) => AppMainScreen(),
           ROUTE_EDIT_SLOTS: (context) => EditSlotsScreen(),
           ROUTE_ADD_ASSIGNMENT: (context) => AddAssignmentScreen(),
         },

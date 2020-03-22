@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         UserDataProvider().isLoggedIn().then((isLoggedIn){
 
           if(isLoggedIn){
-            Navigator.of(context).pushReplacementNamed(ROUTE_HOME);
+            Navigator.of(context).pushReplacementNamed(ROUTE_APP_MAIN);
           } else {
             Navigator.of(context).pushReplacementNamed(ROUTE_LOGIN);
           }

@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class AppMainScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _AppMainScreenState createState() => _AppMainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AppMainScreenState extends State<AppMainScreen> {
   int _selectedTabIndex = 0;
 
   @override

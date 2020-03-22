@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget{
           FlatButton(
             onPressed: (){
               UserDataProvider().setLoggedIn(true);
-              Navigator.of(context).pushReplacementNamed(ROUTE_HOME);
+              Navigator.of(context).pushReplacementNamed(ROUTE_APP_MAIN);
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(90)
