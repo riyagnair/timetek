@@ -31,7 +31,7 @@ class AssignmentDataProvider extends ChangeNotifier {
     var prefs = await SharedPreferences.getInstance();
     var json = prefs.getString("assignments") ?? "[]";
     assignments = (jsonDecode(json) as List).map((e) => Assignment.fromJson(e)).toList();
-    return assignments;
+    notifyListeners();
   }
 
   Future saveAssignments() async {
