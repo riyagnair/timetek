@@ -1,8 +1,8 @@
 import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/ui/account/edit_slots_screen.dart';
 import 'package:TimeTek/ui/assignment/add_assignment_screen.dart';
-import 'package:TimeTek/ui/home/home_screen.dart';
 import 'package:TimeTek/ui/login_screen.dart';
+import 'package:TimeTek/ui/main_screen.dart';
 import 'package:TimeTek/ui/signup_screen.dart';
 import 'package:TimeTek/ui/splash_screen.dart';
 import 'package:TimeTek/util/constants.dart';
