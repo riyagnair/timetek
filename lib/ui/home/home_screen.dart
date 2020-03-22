@@ -1,7 +1,7 @@
 import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/account/my_account_screen.dart';
-import 'package:TimeTek/ui/history_screen.dart';
+import 'package:TimeTek/ui/history/history_screen.dart';
 import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
