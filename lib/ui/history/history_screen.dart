@@ -26,7 +26,7 @@ class HistoryScreen extends StatelessWidget {
               return ListTile(
                 onTap: () {},
                 title: Text(list[index].title, style: GoogleFonts.raleway(color: Colors.white)),
-                subtitle: Text("Due on ${DateFormat("yyyy-MM-dd").format(list[index].startDate)}",
+                subtitle: Text("Due on ${DateFormat("yyyy-MM-dd").format(list[index].endDate)}",
                     style: GoogleFonts.raleway(color: Colors.grey)),
                 leading: Icon(Icons.today),
               );
