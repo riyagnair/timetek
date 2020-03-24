@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AssignmentDataProvider>(builder: (_, provider, __) {
       return FutureBuilder<List<_ListItem>>(
-        future: processItems(provider.assignments),
+        future: provider.loadAssignments().then((_) => processItems(provider.assignments)),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           debugPrint("SNAPSHOT: ${snapshot.connectionState} // ${snapshot.data}");
 

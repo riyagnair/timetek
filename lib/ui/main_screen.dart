@@ -59,7 +59,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
           });
 
           switch (index) {
-            case 0:
             case 2:
               debugPrint("Loading assmtns");
               provider.loadAssignments();
