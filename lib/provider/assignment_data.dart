@@ -27,11 +27,10 @@ class AssignmentDataProvider extends ChangeNotifier {
     prefs.setString("weekly_slots", jsonEncode(slots));
   }
 
-  Future<List<Assignment>> loadAssignments() async {
+  Future loadAssignments() async {
     var prefs = await SharedPreferences.getInstance();
     var json = prefs.getString("assignments") ?? "[]";
     assignments = (jsonDecode(json) as List).map((e) => Assignment.fromJson(e)).toList();
-    notifyListeners();
   }
 
   Future saveAssignments() async {
