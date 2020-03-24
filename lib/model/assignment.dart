@@ -12,9 +12,26 @@ class Assignment {
   String notes;
   DateTime startDate;
   DateTime endDate;
-  int durationMinutes;
   int spentMinutes;
   bool finished;
+
+  int get durationMinutes {
+    return endDate.difference(startDate).inMinutes;
+  }
+
+  String get statusStr {
+
+    if(spentMinutes == null || spentMinutes == 0){
+      return "Not started yet";
+    }
+
+    if(durationMinutes != null && durationMinutes > 0){
+      return "Completed ${((spentMinutes / durationMinutes)*100).floor()}%";
+    }
+
+    return "No status";
+
+  }
 
   Assignment();
 
@@ -24,7 +41,6 @@ class Assignment {
     this.notes,
     this.startDate,
     this.endDate,
-    this.durationMinutes,
     this.spentMinutes,
     this.finished,
   });
@@ -35,7 +51,6 @@ class Assignment {
     notes: json["notes"],
     startDate: DateTime.parse(json["startDate"]),
     endDate: DateTime.parse(json["endDate"]),
-    durationMinutes: json["duration_minutes"],
     spentMinutes: json["spent_minutes"],
     finished: json["finished"],
   );
@@ -46,7 +61,6 @@ class Assignment {
     "notes": notes,
     "startDate": startDate.toIso8601String(),
     "endDate": endDate.toIso8601String(),
-    "duration_minutes": durationMinutes,
     "spent_minutes": spentMinutes,
     "finished": finished,
   };
