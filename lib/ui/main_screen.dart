@@ -2,6 +2,7 @@ import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/account/my_account_screen.dart';
 import 'package:TimeTek/ui/history/history_screen.dart';
+import 'package:TimeTek/ui/home/home_screen.dart';
 import 'package:TimeTek/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
           });
 
           switch (index) {
+            case 0:
             case 2:
               debugPrint("Loading assmtns");
               provider.loadAssignments();
@@ -100,7 +102,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
   Widget _getTabContents(int selectedIndex) {
     switch (selectedIndex) {
       case 0:
-        return Center(child: Text("Home Screen"));
+        return HomeScreen();
       case 1:
         return Center(child: Text("Advisor Screen"));
       case 2:
