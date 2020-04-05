@@ -51,8 +51,15 @@ class _AssignmentItem implements _ListItem {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  Future<List<_ListItem>> processItems(List<Assignment> items) async {
+class HomeScreen extends StatefulWidget {
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  List<_ListItem> processItems(List<Assignment> items) {
     List<Assignment> l1 = items.where((it) => (it.finished == null || it.finished == false)).toList();
 
     l1.sort((a, b) => b.endDate.compareTo(a.endDate));
@@ -75,47 +82,73 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      Provider.of<AssignmentDataProvider>(context, listen: false).loadAssignments();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<AssignmentDataProvider>(builder: (_, provider, __) {
-      return FutureBuilder<List<_ListItem>>(
-        future: provider.loadAssignments().then((_) => processItems(provider.assignments)),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          debugPrint("SNAPSHOT: ${snapshot.connectionState} // ${snapshot.data}");
 
-          if (snapshot.connectionState == ConnectionState.done) {
-            final List<_ListItem> list = snapshot.data;
+      switch(provider.assignmentStatus){
 
-            if (list == null || list.isEmpty) {
-              return Center(
-                child: Text("You don't have any assignments yet."),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  _ListItem _listItem = list[index];
-                  return _listItem.build(
-                    context,
-                    onTap: _listItem is _AssignmentItem
-                      ? () => _updateAssignment(context, provider, _listItem._assignment)
-                      : null,
-                  );
-                }
-              );
-            }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
+        case STATUS.NONE:
+          return Center(
+            child: Text("You don't have assignments."),
+          );
+
+        case STATUS.LOADING:
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+
+        case STATUS.SUCCESS:
+
+          if(provider.assignments != null && provider.assignments.isNotEmpty){
+            List<_ListItem> list = processItems(provider.assignments);
+
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                _ListItem _listItem = list[index];
+                return _listItem.build(
+                  context,
+                  onTap: _listItem is _AssignmentItem
+                    ? () => _updateAssignment(context, provider, _listItem._assignment)
+                    : null,
+                );
+              }
             );
           }
-        },
+
+          return Center(
+            child: Text("You don't have assignments."),
+          );
+
+        case STATUS.ERROR:
+          return Center(
+            child: Text("Error loading assignments"),
+          );
+          break;
+
+        default: Center(
+          child: Text("You don't have assignments."),
+        );
+      }
+
+      return Center(
+        child: Text("You don't have assignments yet."),
       );
+
     });
   }
 
   _updateAssignment(BuildContext context, AssignmentDataProvider provider, Assignment assignment) async {
 
-    int x = await showModalBottomSheet(
+    int minutes = await showModalBottomSheet(
       context: context,
       builder: (_){
         return FutureBuilder(
@@ -136,7 +169,9 @@ class HomeScreen extends StatelessWidget {
       },
     );
 
-    debugPrint("Bottom sheet: $x");
+    if(minutes != null && minutes > 0){
+      await provider.addMinutes(assignment.id, minutes);
+    }
 
   }
 }
