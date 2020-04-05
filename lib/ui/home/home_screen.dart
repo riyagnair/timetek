@@ -186,6 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
       await provider.addMinutes(assignment.id, minutes);
     }
 
+    if(minutes != null && minutes == -1){ // For now, -1 for "Mark as complete"
+      await provider.finishAssignment(assignment.id);
+    }
+
   }
 }
 
@@ -272,36 +276,77 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
           ),
 
           // Text: spent hours
-          Text(
-            minutes > 0 ?"You spent ${printDuration(Duration(minutes: minutes))}" : "Use the slider to enter the hours",
-            textAlign: TextAlign.left,
-            style: GoogleFonts.raleway(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 16
+          Visibility(
+            visible: widget.assignment.percentageDone != 100, // No need if this is already done.
+            child: Text(
+              minutes > 0 ?"You spent ${printDuration(Duration(minutes: minutes))}" : "Use the slider to enter the hours",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.raleway(
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 16
+              ),
             ),
           ),
 
           // Time slider
-          Slider(
-            min: 0,
-            max: widget.maxMinutes.toDouble(),
-            divisions: widget.maxMinutes ~/ 15,
-            value: minutes.toDouble(),
-            onChanged: (value) => setState((){ minutes = value.toInt(); }),
-            activeColor: Colors.deepPurpleAccent,
-            inactiveColor: Colors.white,
+          Visibility(
+            visible: widget.assignment.percentageDone != 100,
+            child: Slider(
+              min: 0,
+              max: widget.maxMinutes.toDouble(),
+              divisions: widget.maxMinutes ~/ 15,
+              value: minutes.toDouble(),
+              onChanged: (value) => setState((){ minutes = value.toInt(); }),
+              activeColor: Colors.deepPurpleAccent,
+              inactiveColor: Colors.white,
+            ),
           ),
 
           // Label: Maximum hours
-          Text(
-            "Based on your weekly availability slots, you can spend maximum ${printDuration(Duration(minutes: widget.maxMinutes))} today.",
-            textAlign: TextAlign.left,
-            style: GoogleFonts.raleway(
-              color: Colors.white.withOpacity(0.6),
+          Visibility(
+            visible: widget.assignment.percentageDone != 100,
+            child: Text(
+              "Based on your weekly availability slots, you can spend maximum ${printDuration(Duration(minutes: widget.maxMinutes))} today.",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.raleway(
+                color: Colors.white.withOpacity(0.6),
+              ),
             ),
           ),
 
           Spacer(),
+
+          Visibility(
+            visible: widget.assignment.percentageDone == 100,
+            child: FlatButton(
+              onPressed: () => Navigator.pop(context, -1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(90)
+              ),
+              padding: EdgeInsets.all(0),
+              child: Ink(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [ Color(0xFFB4A5FE), Color(0xFF8563EA) ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Container(
+                  constraints: BoxConstraints(minHeight: 35),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Mark this assignment as completed",
+                    style: GoogleFonts.raleway(
+                      fontSize: 18,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
 
           Visibility(
             visible: minutes > 0,
