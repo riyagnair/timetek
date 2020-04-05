@@ -23,12 +23,22 @@ class HistoryScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {
+              Assignment item = list[index];
               return ListTile(
                 onTap: () {},
-                title: Text(list[index].title, style: GoogleFonts.raleway(color: Colors.white)),
-                subtitle: Text("Due on ${DateFormat("yyyy-MM-dd").format(list[index].endDate)}",
+                title: Text(item.title, style: GoogleFonts.raleway(color: Colors.white)),
+                subtitle: Text("Due on ${DateFormat("yyyy-MM-dd").format(item.endDate)}",
                     style: GoogleFonts.raleway(color: Colors.grey)),
                 leading: Icon(Icons.today),
+                trailing: item.finished != null && item.finished
+                ? Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.green,
+                )
+                : Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.white.withOpacity(0.1),
+                ),
               );
             },
           );
