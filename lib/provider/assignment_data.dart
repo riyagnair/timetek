@@ -14,6 +14,11 @@ class AssignmentDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<int> getTodaySlot() async {
+    await loadWeeklySlots();
+    return weeklySlots[DateTime.now().weekday%7] ?? 120;
+  }
+
   Future<List<int>> loadWeeklySlots() async {
     var prefs = await SharedPreferences.getInstance();
     var slotsJson = prefs.getString("weekly_slots") ?? '''[0,0,0,0,0,0,0]''';
