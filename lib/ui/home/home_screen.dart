@@ -44,23 +44,40 @@ class _AssignmentItem implements _ListItem {
   Widget build(BuildContext context, {Function onTap}) {
     return ListTile(
       onTap: onTap,
-      title: Text(_assignment.title, style: GoogleFonts.raleway(color: Colors.white)),
-      leading: Icon(Icons.today),
+      title: Text(
+        _assignment.title,
+        style: GoogleFonts.raleway(
+          color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
+        )
+      ),
+      leading: _isFinished()
+        ? Icon(
+          Icons.playlist_add_check,
+          color: Colors.green.withOpacity(0.8),
+        )
+        : Icon(
+          Icons.playlist_play,
+          color: Colors.white.withOpacity(0.1),
+        ),
       subtitle: LinearPercentIndicator(
-        progressColor: Colors.green,
+        progressColor: _isFinished() ? Colors.green.withOpacity(0.5) : Colors.green,
         backgroundColor: Colors.white.withOpacity(0.1),
         lineHeight: 10,
         percent: _getPercentageValue(_assignment.percentageDone),
         trailing: Container(
           width: 40,
           child: Text(
-            "${_assignment.percentageDone}%"
+            "${_assignment.percentageDone}%",
+            style: GoogleFonts.raleway(
+              color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
+            )
           ),
         ),
       ),
     );
   }
 
+  bool _isFinished() => _assignment.finished != null && _assignment.finished;
   double _getPercentageValue(int in100) => in100 > 100 ? 1.0 : in100 / 100.0;
 }
 
@@ -73,11 +90,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   List<_ListItem> processItems(List<Assignment> items) {
-    List<Assignment> l1 = items.where((it) => (it.finished == null || it.finished == false)).toList();
+    List<Assignment> l1 = items;// Hide finished>> .where((it) => (it.finished == null || it.finished == false)).toList();
 
-    l1.sort((a, b) => b.endDate.compareTo(a.endDate));
+    l1.sort((a, b) => a.endDate.compareTo(b.endDate));
 
-    Set<String> set = HashSet();
+    l1.forEach((it) => debugPrint(it.endDate.toIso8601String()));
+
+    LinkedHashSet<String> set = LinkedHashSet();
     l1.forEach((it) => set.add(DateFormat("MMM dd").format(it.endDate)));
 
     debugPrint("Set is $set");
