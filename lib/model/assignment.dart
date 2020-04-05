@@ -19,19 +19,24 @@ class Assignment {
     return endDate.difference(startDate).inMinutes;
   }
 
-  String get statusStr {
+  int get percentageDone {
 
     if(spentMinutes == null || spentMinutes == 0){
-      return "Not started yet";
+      return 0;
     }
 
     if(durationMinutes != null && durationMinutes > 0){
-      return "Completed ${((spentMinutes / durationMinutes)*100).floor()}%";
+      if(((spentMinutes / durationMinutes)*100).floor() > 100){
+        return 100;
+      } else {
+        return ((spentMinutes / durationMinutes)*100).floor();
+      }
     }
 
-    return "No status";
-
+    return 0;
   }
+
+  String get statusStr => percentageDone == 0 ? "Not started yet" : "Completed $percentageDone%";
 
   Assignment();
 
