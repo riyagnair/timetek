@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 Future showAlert(BuildContext context, String title, String body, { Map<String, dynamic> actions }){
 
@@ -27,3 +28,5 @@ Future showAlert(BuildContext context, String title, String body, { Map<String, 
     },
   );
 }
+
+String formatDate(DateTime date) => DateFormat("yyyy-MM-dd").format(date);
