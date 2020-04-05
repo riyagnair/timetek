@@ -64,6 +64,15 @@ class AssignmentDataProvider extends ChangeNotifier {
     }
   }
 
+  Future finishAssignment(String assignmentId) async {
+    Assignment assignment = assignments.firstWhere((it) => it.id == assignmentId);
+    if(assignment != null){
+      assignment.finished = true;
+      await saveAssignments();
+      notifyListeners();
+    }
+  }
+
   Future addAssignment(Assignment assignment) async {
 
     if(assignments == null || assignments.isEmpty){
