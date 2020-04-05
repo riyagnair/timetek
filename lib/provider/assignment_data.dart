@@ -4,10 +4,15 @@ import 'package:TimeTek/model/assignment.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum STATUS{
+  NONE, LOADING, SUCCESS, ERROR
+}
+
 class AssignmentDataProvider extends ChangeNotifier {
 
   List<int> weeklySlots = [0,0,0,0,0,0,0];
   List<Assignment> assignments;
+  STATUS assignmentStatus;
 
   void setWeeklySlot(int weekDay, int minutes){
     weeklySlots[weekDay] = minutes;
@@ -33,15 +38,30 @@ class AssignmentDataProvider extends ChangeNotifier {
   }
 
   Future loadAssignments() async {
+    assignmentStatus = STATUS.LOADING;
+    notifyListeners();
+
     var prefs = await SharedPreferences.getInstance();
     var json = prefs.getString("assignments") ?? "[]";
     assignments = (jsonDecode(json) as List).map((e) => Assignment.fromJson(e)).toList();
+
+    assignmentStatus = STATUS.SUCCESS;
+    notifyListeners();
   }
 
   Future saveAssignments() async {
     var prefs = await SharedPreferences.getInstance();
     debugPrint(jsonEncode(assignments));
     prefs.setString("assignments", jsonEncode(assignments));
+  }
+
+  Future addMinutes(String assignmentId, int minutes) async {
+    Assignment assignment = assignments.firstWhere((it) => it.id == assignmentId);
+    if(assignment != null){
+      assignment.spentMinutes = (assignment.spentMinutes ?? 0) + minutes;
+      await saveAssignments();
+      notifyListeners();
+    }
   }
 
   Future addAssignment(Assignment assignment) async {
