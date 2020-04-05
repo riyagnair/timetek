@@ -7,6 +7,7 @@ import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 abstract class _ListItem {
@@ -44,11 +45,23 @@ class _AssignmentItem implements _ListItem {
     return ListTile(
       onTap: onTap,
       title: Text(_assignment.title, style: GoogleFonts.raleway(color: Colors.white)),
-      subtitle: Text(_assignment.statusStr,
-          style: GoogleFonts.raleway(color: Colors.grey)),
       leading: Icon(Icons.today),
+      subtitle: LinearPercentIndicator(
+        progressColor: Colors.green,
+        backgroundColor: Colors.white.withOpacity(0.1),
+        lineHeight: 10,
+        percent: _getPercentageValue(_assignment.percentageDone),
+        trailing: Container(
+          width: 40,
+          child: Text(
+            "${_assignment.percentageDone}%"
+          ),
+        ),
+      ),
     );
   }
+
+  double _getPercentageValue(int in100) => in100 > 100 ? 1.0 : in100 / 100.0;
 }
 
 class HomeScreen extends StatefulWidget {
