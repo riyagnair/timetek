@@ -101,7 +101,7 @@ class AssignmentDataProvider extends ChangeNotifier {
     await loadAssignments();
     List<Assignment> assignmentsAhead = List.from(assignments);
 
-    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()) && !assmt.isFinished);
+    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()) && !assmt.finished);
 
     debugPrint("Have ${assignmentsAhead.length} assignments to process.");
 
