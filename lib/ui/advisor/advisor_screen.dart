@@ -15,10 +15,14 @@ abstract class _ListItem {
 class _HeaderItem implements _ListItem {
 
   String title;
-  bool isEmpty = false;
-  bool overbooked = false;
+  int availableMins;
+  int allottedMins;
 
-  _HeaderItem(this.title, this.overbooked, {this.isEmpty = false});
+  bool get isEmpty => allottedMins == 0;
+  bool get overbooked => availableMins < allottedMins;
+  int get extraMinutes => allottedMins - availableMins;
+
+  _HeaderItem(this.title, this.availableMins, this.allottedMins);
 
   @override
   Widget build(BuildContext context, {Function onTap}) {
@@ -27,13 +31,29 @@ class _HeaderItem implements _ListItem {
       color: overbooked
         ? Colors.red
         : this.isEmpty ? Colors.green.withOpacity(0.5) : Colors.green,
-      child: Text(
-        title,
-        style: GoogleFonts.raleway(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: this.isEmpty ? Colors.white.withOpacity(0.5) : Colors.white,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: GoogleFonts.raleway(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: this.isEmpty ? Colors.white.withOpacity(0.5) : Colors.white,
+            ),
+          ),
+
+          Visibility(
+            visible: overbooked,
+            child: Text(
+              "overbooked by ${printDuration(Duration(minutes: extraMinutes))}",
+              style: GoogleFonts.raleway(
+                fontSize: 14,
+                color: this.isEmpty ? Colors.white.withOpacity(0.5) : Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -60,9 +80,9 @@ class _NoneItem implements _ListItem {
 
 class _AllotmentItem implements _ListItem {
   Assignment _assignment;
-  int hours;
+  int minutes;
 
-  _AllotmentItem(this._assignment, this.hours);
+  _AllotmentItem(this._assignment, this.minutes);
 
   @override
   Widget build(BuildContext context, {Function onTap}) {
@@ -75,7 +95,7 @@ class _AllotmentItem implements _ListItem {
         )
       ),
       trailing: Text(
-        "$hours hours",
+        "${printDuration(Duration(minutes: minutes))}",
         style: GoogleFonts.raleway(
           color: Colors.white.withOpacity(0.5),
         )
@@ -100,20 +120,18 @@ class _AdviserScreenState extends State<AdviserScreen> {
 
     allotments.forEach((key, value) {
 
-      debugPrint("alloted $key with ${value.dateTime}");
-
       finalList.add(
         _HeaderItem(
           "${_dateFormat.format(value.dateTime)}",
-          value.isOverBooked,
-          isEmpty: value.slots.isEmpty,
+          value.availableMinutes,
+          value.bookedMinutes,
         ),
       );
 
       if(value.slots.isEmpty){
         finalList.add(_NoneItem());
       } else {
-        value.slots.forEach((assmt, hours) => finalList.add(_AllotmentItem(assmt, hours)));
+        value.slots.forEach((assmt, minutes) => finalList.add(_AllotmentItem(assmt, minutes)));
       }
 
     });
