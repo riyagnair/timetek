@@ -151,11 +151,11 @@ class _AdviserScreenState extends State<AdviserScreen> {
   Widget build(BuildContext context) {
     return Consumer<AssignmentDataProvider>(builder: (_, provider, __) {
 
-      switch(provider.assignmentStatus){
+      switch(provider.adviserStatus){
 
         case STATUS.NONE:
           return Center(
-            child: Text("You don't have assignments."),
+            child: Text("Hoo! No assignments to do."),
           );
 
         case STATUS.LOADING:
@@ -184,7 +184,7 @@ class _AdviserScreenState extends State<AdviserScreen> {
           }
 
           return Center(
-            child: Text("You don't have assignments."),
+            child: Text("Hoo! No assignments to do."),
           );
 
         case STATUS.ERROR:
@@ -194,7 +194,7 @@ class _AdviserScreenState extends State<AdviserScreen> {
           break;
 
         default: Center(
-          child: Text("You don't have assignments."),
+          child: Text("Hoo! No assignments to do."),
         );
       }
 
