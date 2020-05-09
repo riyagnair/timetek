@@ -270,6 +270,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       return;
     }
 
+    _assignment.finished = false;
+
     Provider.of<AssignmentDataProvider>(context, listen: false).addAssignment(_assignment).then((_) {
       Navigator.of(context).pop();
     });

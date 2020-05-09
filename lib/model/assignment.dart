@@ -19,8 +19,6 @@ class Assignment {
   int spentMinutes;
   bool finished;
 
-  bool get isFinished => this.percentageDone >= 100;
-
   int get durationMinutes {
     return Duration(hours: hours ?? defaultHours).inMinutes;
   }
