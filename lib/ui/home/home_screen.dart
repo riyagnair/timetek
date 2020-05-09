@@ -44,11 +44,26 @@ class _AssignmentItem implements _ListItem {
   Widget build(BuildContext context, {Function onTap}) {
     return ListTile(
       onTap: onTap,
-      title: Text(
-        _assignment.title,
-        style: GoogleFonts.raleway(
-          color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
-        )
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            _assignment.title,
+            style: GoogleFonts.raleway(
+              color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
+            )
+          ),
+          Visibility(
+            visible: _assignment.finished == false,
+            child: Text(
+              _assignment.percentageDone == 100 ? "No more work to do!" : "${printDuration(Duration(minutes: _assignment.remainingMinutes))} of work to do.",
+              style: GoogleFonts.raleway(
+                color: Colors.white.withOpacity(0.5),
+                fontSize: 14
+              )
+            ),
+          )
+        ],
       ),
       leading: _isFinished()
         ? Icon(
@@ -272,6 +287,20 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
             color: Colors.white.withOpacity(0.9),
           ),
 
+          Text(
+            widget.assignment.finished
+              ? "✔ Finished"
+              : widget.assignment.percentageDone == 100 ? "No more work to do!" : "⌚ ${printDuration(Duration(minutes: widget.assignment.remainingMinutes))} of work to do.",
+            style: GoogleFonts.raleway(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 14
+            )
+          ),
+
+          Divider(
+            color: Colors.white.withOpacity(0.9),
+          ),
+
           // Start / Due Date Labels
           Row(
             children: <Widget>[
@@ -288,6 +317,10 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
               Spacer(),
               Text(formatDate(widget.assignment.endDate), style: GoogleFonts.raleway(fontSize: 16),),
             ],
+          ),
+
+          Divider(
+            color: Colors.white.withOpacity(0.9),
           ),
 
           SizedBox(
@@ -336,7 +369,7 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
           Spacer(),
 
           Visibility(
-            visible: widget.assignment.percentageDone == 100,
+            visible: widget.assignment.percentageDone == 100 && widget.assignment.finished == false,
             child: FlatButton(
               onPressed: () => Navigator.pop(context, -1),
               shape: RoundedRectangleBorder(
