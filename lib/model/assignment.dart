@@ -7,16 +7,20 @@ Assignment assignmentFromJson(String str) => Assignment.fromJson(json.decode(str
 String assignmentToJson(Assignment data) => json.encode(data.toJson());
 
 class Assignment {
+
+  static final defaultHours = 30;
+
   String id = DateTime.now().millisecondsSinceEpoch.toString();
   String title;
   String notes;
+  int hours;
   DateTime startDate;
   DateTime endDate;
   int spentMinutes;
   bool finished;
 
   int get durationMinutes {
-    return endDate.difference(startDate).inMinutes;
+    return Duration(hours: hours ?? defaultHours).inMinutes;
   }
 
   int get percentageDone {
@@ -44,6 +48,7 @@ class Assignment {
     this.id,
     this.title,
     this.notes,
+    this.hours,
     this.startDate,
     this.endDate,
     this.spentMinutes,
@@ -54,6 +59,7 @@ class Assignment {
     id: json["id"],
     title: json["title"],
     notes: json["notes"],
+    hours: json["hours"],
     startDate: DateTime.parse(json["startDate"]),
     endDate: DateTime.parse(json["endDate"]),
     spentMinutes: json["spent_minutes"],
@@ -63,7 +69,7 @@ class Assignment {
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
-    "notes": notes,
+    "hours": hours,
     "startDate": startDate.toIso8601String(),
     "endDate": endDate.toIso8601String(),
     "spent_minutes": spentMinutes,

@@ -77,6 +77,27 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       contentPadding: EdgeInsets.all(8),
                     ),
                   ),
+                ),// Assignment Description
+
+                // Assignment total hours required
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 4),
+                  child: Text(
+                    "Total Hours Reqiuired ${ _assignment.hours != null && _assignment.hours > 0 ? ": ${_assignment.hours}" : ": Please choose below"}",
+                    style: GoogleFonts.raleway(
+                      fontSize: 14
+                    ),
+                  ),
+                ),
+
+                Slider(
+                  min: 0,
+                  max: 40,
+                  divisions: 40,
+                  value: _assignment.hours?.toDouble() ?? 0,
+                  onChanged: (value) => setState(() => _assignment.hours = value.toInt()),
+                  activeColor: Colors.deepPurpleAccent,
+                  inactiveColor: Colors.white,
                 ),
 
                 // Start & End Dates
