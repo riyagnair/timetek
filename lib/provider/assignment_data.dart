@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:TimeTek/adviser/adviser.dart';
 import 'package:TimeTek/model/assignment.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,9 @@ class AssignmentDataProvider extends ChangeNotifier {
   List<int> weeklySlots = [0,0,0,0,0,0,0];
   List<Assignment> assignments;
   STATUS assignmentStatus;
+
+  STATUS adviserStatus;
+  Map<String, DailyAllotment> advise = {};
 
   void setWeeklySlot(int weekDay, int minutes){
     weeklySlots[weekDay] = minutes;
@@ -87,5 +91,28 @@ class AssignmentDataProvider extends ChangeNotifier {
 
   }
 
+  Future makeAdvise() async {
+
+    adviserStatus = STATUS.LOADING;
+    notifyListeners();
+
+    await loadAssignments();
+    List<Assignment> assignmentsAhead = List.from(assignments);
+
+    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()));
+
+    if(assignmentsAhead.isEmpty){
+      adviserStatus = STATUS.NONE;
+      notifyListeners();
+      return;
+    }
+
+    Adviser adviser = Adviser(assignmentsAhead, await loadWeeklySlots());
+
+    advise = adviser.allotment;
+
+    adviserStatus = STATUS.SUCCESS;
+    notifyListeners();
+  }
 
 }
