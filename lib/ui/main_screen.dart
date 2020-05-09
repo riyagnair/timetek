@@ -53,47 +53,67 @@ class _AppMainScreenState extends State<AppMainScreen> {
         width: MediaQuery.of(context).size.width,
         child: _getTabContents(_selectedTabIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _selectedTabIndex = index;
-          });
-
-          switch (index) {
-            case 2:
-              debugPrint("Loading assmtns");
-              provider.loadAssignments();
-          }
-        },
-        currentIndex: _selectedTabIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.thumb_up),
-            title: Text("Advisor"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            title: Text("History"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("My Account"),
-          ),
-        ],
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        clipBehavior: Clip.antiAlias,
+        color: Colors.transparent,
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            _getIcon(icon: Icons.home, text: "Home", isSelected: _selectedTabIndex == 0, onTap: () { setState(() => _selectedTabIndex = 0); },),
+            _getIcon(icon: Icons.transfer_within_a_station, text: "Adviser", isSelected: _selectedTabIndex == 1, onTap: () { setState(() => _selectedTabIndex = 1); },),
+            /* placeholder only */ Expanded(child: Container(height: 55, color: Colors.white.withOpacity(0.2)),),
+            _getIcon(icon: Icons.view_list, text: "History", isSelected: _selectedTabIndex == 2, onTap: () { setState(() => _selectedTabIndex = 2); },),
+            _getIcon(icon: Icons.account_circle, text: "Account", isSelected: _selectedTabIndex == 3, onTap: () { setState(() => _selectedTabIndex = 3); },),
+          ],
+        ),
       ),
-      floatingActionButton: Visibility(
-        visible: _selectedTabIndex != 3,
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT);
-          },
-          child: Icon(Icons.add),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT);
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _getIcon({
+    @required IconData icon,
+    @required String text,
+    @required bool isSelected,
+    Function onTap
+  }){
+    return Expanded(
+      child: Container(
+        height: 55,
+        child: Material(
+          color: Colors.white.withOpacity(0.2),
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  icon,
+                  color: isSelected ? Theme.of(context).primaryColor : Colors.white,
+                ),
+
+                Visibility(
+                  visible: isSelected,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
