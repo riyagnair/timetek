@@ -1,6 +1,7 @@
 import 'package:TimeTek/provider/assignment_data.dart';
 import 'package:TimeTek/provider/user_data.dart';
 import 'package:TimeTek/ui/account/my_account_screen.dart';
+import 'package:TimeTek/ui/advisor/advisor_screen.dart';
 import 'package:TimeTek/ui/history/history_screen.dart';
 import 'package:TimeTek/ui/home/home_screen.dart';
 import 'package:TimeTek/util/constants.dart';
@@ -103,7 +104,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
       case 0:
         return HomeScreen();
       case 1:
-        return Center(child: Text("Advisor Screen"));
+        return AdviserScreen();
       case 2:
         return HistoryScreen();
       case 3:
