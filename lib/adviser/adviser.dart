@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class DailyAllotment {
-  static const int SLOT_TIME = 30; // 30 minutes of allotment
+  static const int SLOT_TIME = 15; // 15 minutes of allotment
 
   DateTime dateTime; // Date of this allotment.
 
@@ -34,6 +34,9 @@ class DailyAllotment {
 }
 
 class Adviser {
+
+  static const int SLOT_TIME = 15; // 30 minutes of allotment
+
   List<Assignment> assignments;
   List<int> slots;
 
@@ -80,9 +83,9 @@ class Adviser {
         String key = _indexFormat.format(dateTimeIterator);
 
         debugPrint("Alloting ${assignment.title} on ${key}");
-        _dailyAllotment[key].allot(assignment, minutes: 30);
+        _dailyAllotment[key].allot(assignment, minutes: SLOT_TIME);
 
-        remainingMinutes -= 30;
+        remainingMinutes -= SLOT_TIME;
 
         dateTimeIterator = dateTimeIterator.subtract(Duration(days: 1));
 
