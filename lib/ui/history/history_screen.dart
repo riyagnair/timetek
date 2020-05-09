@@ -5,7 +5,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
+  @override
+  _HistoryScreenState createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      Provider.of<AssignmentDataProvider>(context, listen: false).loadAssignments();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Selector<AssignmentDataProvider, List<Assignment>>(
