@@ -30,7 +30,7 @@ class _HeaderItem implements _ListItem {
       padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       color: overbooked
         ? Colors.red
-        : this.isEmpty ? Colors.green.withOpacity(0.5) : Colors.green,
+        : this.isEmpty ? Colors.white.withOpacity(0.2) : Colors.green,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -39,7 +39,7 @@ class _HeaderItem implements _ListItem {
             style: GoogleFonts.raleway(
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              color: this.isEmpty ? Colors.white.withOpacity(0.5) : Colors.white,
+              color: this.isEmpty ? Colors.white.withOpacity(0.2) : Colors.white,
             ),
           ),
 
@@ -49,7 +49,7 @@ class _HeaderItem implements _ListItem {
               "overbooked by ${printDuration(Duration(minutes: extraMinutes))}",
               style: GoogleFonts.raleway(
                 fontSize: 14,
-                color: this.isEmpty ? Colors.white.withOpacity(0.5) : Colors.white,
+                color: Colors.white,
               ),
             ),
           )
@@ -71,7 +71,7 @@ class _NoneItem implements _ListItem {
       title: Text(
         this.title ?? "No items for this day.",
         style: GoogleFonts.raleway(
-          color: Colors.white.withOpacity(0.5),
+          color: Colors.white.withOpacity(0.2),
         )
       )
     );
