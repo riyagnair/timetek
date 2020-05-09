@@ -272,18 +272,15 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
           // Title and "Edit"
           Row(
             children: <Widget>[
-              Text(
-                widget.assignment.title,
-                style: GoogleFonts.raleway(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
+              Flexible(
+                child: Text(
+                  widget.assignment.title,
+                  style: GoogleFonts.raleway(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
-              Spacer(),
-              IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.edit),
-              )
             ],
           ),
 
@@ -328,7 +325,7 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
           ),
 
           SizedBox(
-            height: 24,
+            height: 8,
           ),
 
           // Text: spent hours
@@ -366,6 +363,7 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
               textAlign: TextAlign.left,
               style: GoogleFonts.raleway(
                 color: Colors.white.withOpacity(0.6),
+                fontSize: 12
               ),
             ),
           ),
@@ -454,7 +452,7 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 180, minHeight: 35),
+                  constraints: BoxConstraints(maxWidth: 160, minHeight: 35),
                   alignment: Alignment.center,
                   child: Text(
                     "Add Hours",
