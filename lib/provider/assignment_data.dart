@@ -89,6 +89,8 @@ class AssignmentDataProvider extends ChangeNotifier {
 
     notifyListeners();
 
+    makeAdvise();
+
   }
 
   Future makeAdvise() async {
@@ -99,9 +101,12 @@ class AssignmentDataProvider extends ChangeNotifier {
     await loadAssignments();
     List<Assignment> assignmentsAhead = List.from(assignments);
 
-    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()));
+    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()) && !assmt.isFinished);
+
+    debugPrint("Have ${assignmentsAhead.length} assignments to process.");
 
     if(assignmentsAhead.isEmpty){
+      advise = {};
       adviserStatus = STATUS.NONE;
       notifyListeners();
       return;
