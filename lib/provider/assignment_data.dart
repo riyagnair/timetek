@@ -77,6 +77,12 @@ class AssignmentDataProvider extends ChangeNotifier {
     }
   }
 
+  Future deleteAssignment(String assignmentId) async {
+    assignments.removeWhere((it) => it.id == assignmentId);
+    await saveAssignments();
+    notifyListeners();
+  }
+
   Future addAssignment(Assignment assignment) async {
 
     if(assignments == null || assignments.isEmpty){

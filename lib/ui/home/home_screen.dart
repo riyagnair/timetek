@@ -224,6 +224,10 @@ class _HomeScreenState extends State<HomeScreen> {
       await provider.finishAssignment(assignment.id);
     }
 
+    if(minutes != null && minutes == -2){ // For now, -1 for "Mark as complete"
+      await provider.deleteAssignment(assignment.id);
+    }
+
   }
 }
 
@@ -390,6 +394,38 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
                   alignment: Alignment.center,
                   child: Text(
                     "Mark this assignment as completed",
+                    style: GoogleFonts.raleway(
+                      fontSize: 18,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          Visibility(
+            visible: widget.assignment.finished == true,
+            child: FlatButton(
+              onPressed: () => Navigator.pop(context, -2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(90)
+              ),
+              padding: EdgeInsets.all(0),
+              child: Ink(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [ Color(0xFFFF0000), Color(0xFFBB0000) ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Container(
+                  constraints: BoxConstraints(minHeight: 35),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Remove this assignment",
                     style: GoogleFonts.raleway(
                       fontSize: 18,
                       color: Colors.white
