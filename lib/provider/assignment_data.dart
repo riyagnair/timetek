@@ -101,7 +101,7 @@ class AssignmentDataProvider extends ChangeNotifier {
     await loadAssignments();
     List<Assignment> assignmentsAhead = List.from(assignments);
 
-    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()) && !assmt.finished);
+    assignmentsAhead.retainWhere((assmt) => assmt.endDate.isAfter(DateTime.now()) && assmt.percentageDone != 100);
 
     debugPrint("Have ${assignmentsAhead.length} assignments to process.");
 
