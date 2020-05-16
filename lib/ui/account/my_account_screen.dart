@@ -49,6 +49,35 @@ class MyAccountScreen extends StatelessWidget{
         // Button: Log Out
         _profileButton("Log out", () => _logout(context), showArrow: false),
 
+        Spacer(),
+
+        Opacity(
+          opacity: 0.3,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Image.asset(
+                  "resources/icon.png",
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+              Text(
+                "TimeTek v1.0",
+                style: GoogleFonts.raleway(
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        SizedBox(height: 50,),
 
       ],
     );
