@@ -14,6 +14,23 @@ class AddAssignmentScreen extends StatefulWidget {
 class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   Assignment _assignment = Assignment();
 
+  TextEditingController _titleController = TextEditingController();
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, (){
+
+      var input = ModalRoute.of(context).settings.arguments;
+
+      if(input != null && input is String){
+        _assignment.title = input;
+        _titleController.text = input;
+      }
+
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +64,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6), border: Border.all(color: Color(0xFF8563EA), width: 2)),
                   child: TextField(
+                    controller: _titleController,
                     keyboardType: TextInputType.emailAddress,
                     style: GoogleFonts.raleway(),
                     onChanged: (text) {
