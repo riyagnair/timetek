@@ -11,7 +11,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 abstract class _ListItem {
-  Widget build(BuildContext context, {Function onTap});
+  Widget build(BuildContext context, {Function onTap, Function onDismissed});
 }
 
 class _HeaderItem implements _ListItem {
@@ -20,7 +20,7 @@ class _HeaderItem implements _ListItem {
   _HeaderItem(this.title);
 
   @override
-  Widget build(BuildContext context, {Function onTap}) {
+  Widget build(BuildContext context, {Function onTap, Function onDismissed}) {
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       color: Theme.of(context).primaryColor,
@@ -41,51 +41,78 @@ class _AssignmentItem implements _ListItem {
   _AssignmentItem(this._assignment);
 
   @override
-  Widget build(BuildContext context, {Function onTap}) {
-    return ListTile(
-      onTap: onTap,
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            _assignment.title,
-            style: GoogleFonts.raleway(
-              color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
-            )
+  Widget build(BuildContext context, {Function onTap, Function onDismissed}) {
+    return Dismissible(
+      key: Key(_assignment.id),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) async {
+        return await showAlert(
+          context,
+          "Delete Assignment?",
+          "Do you want to delete ${_assignment.title}?",
+          actions: {
+            "Yes" : true,
+            "No" : false
+          }
+        ) ? true : false;
+      },
+      onDismissed: (direction) => onDismissed(_assignment),
+      background: Container(
+        color: Colors.red,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
           ),
-          Visibility(
-            visible: _assignment.finished == false,
-            child: Text(
-              _assignment.percentageDone == 100 ? "No more work to do!" : "${printDuration(Duration(minutes: _assignment.remainingMinutes))} of work to do.",
+        ),
+        alignment: Alignment.centerRight,
+      ),
+      child: ListTile(
+        onTap: onTap,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              _assignment.title,
               style: GoogleFonts.raleway(
-                color: Colors.white.withOpacity(0.5),
-                fontSize: 14
+                color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
               )
             ),
-          )
-        ],
-      ),
-      leading: _isFinished()
-        ? Icon(
-          Icons.playlist_add_check,
-          color: Colors.green.withOpacity(0.8),
-        )
-        : Icon(
-          Icons.playlist_play,
-          color: Colors.white.withOpacity(0.1),
-        ),
-      subtitle: LinearPercentIndicator(
-        progressColor: _isFinished() ? Colors.green.withOpacity(0.5) : Colors.green,
-        backgroundColor: Colors.white.withOpacity(0.1),
-        lineHeight: 10,
-        percent: _getPercentageValue(_assignment.percentageDone),
-        trailing: Container(
-          width: 40,
-          child: Text(
-            "${_assignment.percentageDone}%",
-            style: GoogleFonts.raleway(
-              color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
+            Visibility(
+              visible: _assignment.finished == false,
+              child: Text(
+                _assignment.percentageDone == 100 ? "No more work to do!" : "${printDuration(Duration(minutes: _assignment.remainingMinutes))} of work to do.",
+                style: GoogleFonts.raleway(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 14
+                )
+              ),
             )
+          ],
+        ),
+        leading: _isFinished()
+          ? Icon(
+            Icons.playlist_add_check,
+            color: Colors.green.withOpacity(0.8),
+          )
+          : Icon(
+            Icons.playlist_play,
+            color: Colors.white.withOpacity(0.1),
+          ),
+        subtitle: LinearPercentIndicator(
+          progressColor: _isFinished() ? Colors.green.withOpacity(0.5) : Colors.green,
+          backgroundColor: Colors.white.withOpacity(0.1),
+          lineHeight: 10,
+          percent: _getPercentageValue(_assignment.percentageDone),
+          trailing: Container(
+            width: 40,
+            child: Text(
+              "${_assignment.percentageDone}%",
+              style: GoogleFonts.raleway(
+                color: _isFinished() ? Colors.white.withOpacity(0.5) : Colors.white
+              )
+            ),
           ),
         ),
       ),
@@ -166,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: _listItem is _AssignmentItem
                     ? () => _updateAssignment(context, provider, _listItem._assignment)
                     : null,
+                  onDismissed: (Assignment assignment) => _removeAssignment(context, provider, assignment)
                 );
               }
             );
@@ -191,6 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
     });
+  }
+
+  _removeAssignment(BuildContext context, AssignmentDataProvider provider, Assignment assignment) async {
+    await provider.deleteAssignment(assignment.id);
   }
 
   _updateAssignment(BuildContext context, AssignmentDataProvider provider, Assignment assignment) async {
