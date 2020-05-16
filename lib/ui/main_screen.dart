@@ -207,20 +207,33 @@ class _AppMainScreenState extends State<AppMainScreen> {
             Icon(
               Icons.mic,
               size: 60,
-              color: Colors.red.withOpacity(0.7),
+              color: speech.isListening ? Colors.red.withOpacity(0.7) : Colors.white.withOpacity(0.5),
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Speak out loud. For example, you can say\n\"Add Systems Engineering for 12 hours with description include diagrams for processors\"",
+                style: GoogleFonts.raleway(
+                  fontSize: 14,
+                  color: Colors.white.withOpacity(0.4),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 (){
                   if(lastError != null && lastError.isNotEmpty){
-                    return "Didn't catch that!";
+                    return "Oops! Didn't catch that!";
                   } else if(recognizedWords != null && recognizedWords.isNotEmpty){
                     return "\"$recognizedWords\"";
-                  } else return "...";
+                  } else return "listening...";
                 }(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.raleway(
                   fontSize: 30
                 ),
               ),
