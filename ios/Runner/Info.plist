@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone access required for adding new assignments by voice input.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+    <string>Speech recognition required for adding new assignments by voice input.</string>
 </dict>
 </plist>
