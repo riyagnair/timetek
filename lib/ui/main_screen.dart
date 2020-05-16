@@ -86,6 +86,12 @@ class _AppMainScreenState extends State<AppMainScreen> {
             ),
           ),
         ),
+        actions: <Widget>[
+          _hasSpeech ? IconButton(
+            icon: Icon(Icons.add_circle),
+            onPressed: () => Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT)
+          ) : Container()
+        ],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
