@@ -90,6 +90,7 @@ class _AllotmentItem implements _ListItem {
       title: Text(
         _assignment.title,
         style: GoogleFonts.raleway(
+          fontSize: 17,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         )
@@ -97,6 +98,7 @@ class _AllotmentItem implements _ListItem {
       trailing: Text(
         "${printDuration(Duration(minutes: minutes))}",
         style: GoogleFonts.raleway(
+          fontSize: 16,
           color: Colors.white.withOpacity(0.5),
         )
       ),
