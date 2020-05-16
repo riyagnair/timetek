@@ -9,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class AppMainScreen extends StatefulWidget {
   @override
@@ -18,6 +21,38 @@ class AppMainScreen extends StatefulWidget {
 class _AppMainScreenState extends State<AppMainScreen> {
   int _selectedTabIndex = 0;
 
+  // remember the previous tab before listening to voice.
+  // After the voice input is done, restore the tab.
+  int _previousTabIndex = 0;
+
+  bool _hasSpeech = false;
+  bool _stressTest = false;
+  double level = 0.0;
+  int _stressLoops = 0;
+  String recognizedWords = "";
+  String lastError = "";
+  String lastStatus = "";
+  String _currentLocaleId = "";
+  List<LocaleName> _localeNames = [];
+  final SpeechToText speech = SpeechToText();
+
+  Future<void> initSpeechState() async {
+    bool hasSpeech = await speech.initialize(
+      onError: errorListener, onStatus: statusListener);
+    if (hasSpeech) {
+      _localeNames = await speech.locales();
+
+      var systemLocale = await speech.systemLocale();
+      _currentLocaleId = systemLocale.localeId;
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _hasSpeech = hasSpeech;
+    });
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
@@ -26,6 +61,9 @@ class _AppMainScreenState extends State<AppMainScreen> {
           Navigator.of(context).pushNamed(ROUTE_EDIT_SLOTS);
         }
       });
+
+      initSpeechState();
+
     });
 
     super.initState();
@@ -72,10 +110,10 @@ class _AppMainScreenState extends State<AppMainScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT);
-        },
-        child: Icon(Icons.add),
+        onPressed: !_hasSpeech
+          ? () => Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT)
+          : !speech.isListening ? startListening : null,
+        child: !_hasSpeech ? Icon(Icons.add) : Icon(Icons.mic),
       ),
     );
   }
@@ -129,6 +167,8 @@ class _AppMainScreenState extends State<AppMainScreen> {
         return HistoryScreen();
       case 3:
         return MyAccountScreen();
+      case 99:
+        return _voiceInputUI();
       default:
         return Center(
           child: Text("Home Screen"),
@@ -149,5 +189,146 @@ class _AppMainScreenState extends State<AppMainScreen> {
       default:
         return "Home";
     }
+  }
+
+  Widget _voiceInputUI(){
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.mic,
+              size: 60,
+              color: Colors.red.withOpacity(0.7),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                (){
+                  if(lastError != null && lastError.isNotEmpty){
+                    return "Didn't catch that!";
+                  } else if(recognizedWords != null && recognizedWords.isNotEmpty){
+                    return "\"$recognizedWords\"";
+                  } else return "...";
+                }(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30
+                ),
+              ),
+            ),
+
+            Visibility(
+              visible: !speech.isListening && recognizedWords != null && recognizedWords.isNotEmpty,
+              child: FlatButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: (){
+                  setState(() {
+                    _selectedTabIndex = _previousTabIndex;
+                  });
+                  Navigator.of(context).pushNamed(ROUTE_ADD_ASSIGNMENT, arguments: recognizedWords);
+                },
+                child: Text("Add Assignment"),
+              ),
+            ),
+
+            SizedBox(
+              height: 50,
+            ),
+
+
+            FlatButton(
+              onPressed: (){
+                setState(() {
+                  speech.cancel();
+                  _selectedTabIndex = _previousTabIndex;
+                });
+              },
+              child: Text("Cancel"),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  void changeStatusForStress(String status) {
+    if (!_stressTest) {
+      return;
+    }
+    if (speech.isListening) {
+      stopListening();
+    } else {
+      if (_stressLoops >= 100) {
+        _stressTest = false;
+        print("Stress test complete.");
+        return;
+      }
+      print("Stress loop: $_stressLoops");
+      ++_stressLoops;
+      startListening();
+    }
+  }
+
+  void startListening() {
+    recognizedWords = "";
+    lastError = "";
+    speech.listen(
+      onResult: resultListener,
+      listenFor: Duration(seconds: 10),
+      localeId: _currentLocaleId,
+      onSoundLevelChange: soundLevelListener,
+      cancelOnError: true,
+      partialResults: true);
+    setState(() {
+      if(_selectedTabIndex != 99){
+        _previousTabIndex = _selectedTabIndex;
+      }
+      _selectedTabIndex = 99;
+    });
+  }
+
+  void stopListening() {
+    speech.stop();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void cancelListening() {
+    speech.cancel();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    setState(() {
+      recognizedWords = "${result.recognizedWords}";
+      debugPrint("$recognizedWords");
+    });
+  }
+
+  void soundLevelListener(double level) {
+    setState(() {
+      this.level = level;
+    });
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    setState(() {
+      lastError = "${error.errorMsg} - ${error.permanent}";
+    });
+  }
+
+  void statusListener(String status) {
+    changeStatusForStress(status);
+    setState(() {
+      lastStatus = "$status";
+      debugPrint("$lastStatus");
+    });
   }
 }
