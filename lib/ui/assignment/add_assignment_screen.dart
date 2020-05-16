@@ -15,6 +15,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   Assignment _assignment = Assignment();
 
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _descController = TextEditingController();
 
   @override
   void initState() {
@@ -23,9 +24,44 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       var input = ModalRoute.of(context).settings.arguments;
 
       if(input != null && input is String){
-        _assignment.title = input;
-        _titleController.text = input;
+
+        // TODO we can do some kind of natural language processing here.
+        // Currently adding a very simple NLP that will process the format
+        //   "Add xyz for n hours with description abcd"
+        Map simpleNLP = _doSimpleNLP(input);
+
+        if(simpleNLP != null && simpleNLP.length > 0){
+
+          // Got some results!
+
+          // Title?
+          if(simpleNLP["title"] != null){
+            _assignment.title = simpleNLP["title"];
+            _titleController.text = simpleNLP["title"];
+          } else {
+            _assignment.title = input;
+            _titleController.text = input;
+          }
+
+          // Description?
+          if(simpleNLP["description"] != null){
+            _assignment.notes = simpleNLP["description"];
+            _descController.text = simpleNLP["description"];
+          }
+
+          // Hours?
+          if(simpleNLP["hours"] != null){
+            _assignment.hours = simpleNLP["hours"];
+          }
+
+        } else {
+          _assignment.title = input;
+          _titleController.text = input;
+        }
+
       }
+
+      setState(() {});
 
     });
     super.initState();
@@ -82,6 +118,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6), border: Border.all(color: Color(0xFF8563EA), width: 2)),
                   child: TextField(
+                    controller: _descController,
                     keyboardType: TextInputType.emailAddress,
                     style: GoogleFonts.raleway(),
                     minLines: 4,
@@ -293,5 +330,36 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     Provider.of<AssignmentDataProvider>(context, listen: false).addAssignment(_assignment).then((_) {
       Navigator.of(context).pop();
     });
+  }
+
+  Map _doSimpleNLP(String input){
+
+    Map result = {};
+
+    // Hours
+    RegExp expHours = RegExp(r'(\d) hours*', caseSensitive: false);
+    RegExpMatch hoursMatch = expHours.firstMatch(input);
+    if(hoursMatch != null && hoursMatch.groupCount > 0 && int.tryParse(hoursMatch.group(1)) != null){
+      result["hours"] = int.tryParse(hoursMatch.group(1));
+    }
+
+    // Title
+    RegExp expTitle = RegExp(r'[Add?\s]?(\w*) for', caseSensitive: false);
+    RegExpMatch titleMatch = expTitle.firstMatch(input);
+    if(titleMatch != null && titleMatch.groupCount > 0){
+      result["title"] = titleMatch.group(1);
+    }
+
+    // Description
+    RegExp expDesc = RegExp(r'with description ([\w\s]+)$', caseSensitive: false);
+    RegExpMatch descMatch = expDesc.firstMatch(input);
+    if(descMatch != null && descMatch.groupCount > 0){
+      result["description"] = descMatch.group(1);
+    }
+
+    debugPrint("Simple NLP: $result");
+
+    return result;
+
   }
 }
