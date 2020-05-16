@@ -77,14 +77,29 @@ class _AppMainScreenState extends State<AppMainScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text(
-          _getTabTitle(_selectedTabIndex),
-          style: GoogleFonts.raleway(
-            textStyle: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+        title: Row(
+          children: <Widget>[
+            Opacity(
+              opacity: 0.4,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Image.asset(
+                  "resources/icon.png",
+                  width: 20,
+                  height: 20,
+                ),
+              ),
             ),
-          ),
+            Text(
+              _getTabTitle(_selectedTabIndex),
+              style: GoogleFonts.raleway(
+                textStyle: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
         ),
         actions: <Widget>[
           _hasSpeech ? IconButton(
