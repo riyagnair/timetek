@@ -195,23 +195,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _updateAssignment(BuildContext context, AssignmentDataProvider provider, Assignment assignment) async {
 
-    int minutes = await showModalBottomSheet(
+    int minutes = await showDialog(
       context: context,
       builder: (_){
-        return FutureBuilder(
-          future: provider.getTodaySlot(),
-          builder: (ctx, snapshot){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))
+          ),
+          child: FutureBuilder(
+            future: provider.getTodaySlot(),
+            builder: (ctx, snapshot){
 
-            debugPrint("$snapshot");
+              debugPrint("$snapshot");
 
-            if(snapshot.hasData){
-              return UpdateHoursWidget(assignment, snapshot.data);
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+              if(snapshot.hasData){
+                return UpdateHoursWidget(assignment, snapshot.data);
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         );
       },
     );
@@ -258,14 +263,14 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12)
+        borderRadius: BorderRadius.all(
+          Radius.circular(10)
         ),
         border: Border.all(color: Theme.of(context).primaryColor)
       ),
 
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
 
@@ -368,8 +373,6 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
             ),
           ),
 
-          Spacer(),
-
           Visibility(
             visible: widget.assignment.percentageDone == 100 && widget.assignment.finished == false,
             child: FlatButton(
@@ -388,12 +391,14 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Container(
+                  padding: EdgeInsets.all(4),
                   constraints: BoxConstraints(minHeight: 35),
                   alignment: Alignment.center,
                   child: Text(
                     "Mark this assignment as completed",
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.raleway(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.white
                     ),
                   ),
@@ -435,17 +440,18 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
           ),
 
           Visibility(
-            visible: minutes > 0,
+            visible: widget.assignment.percentageDone < 100,
             child: FlatButton(
               onPressed: minutes > 0 ? () => Navigator.pop(context, minutes) : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(90)
               ),
               padding: EdgeInsets.all(0),
+              disabledColor: Colors.grey,
               child: Ink(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [ Color(0xFFB4A5FE), Color(0xFF8563EA) ],
+                    colors: minutes > 0 ? [ Color(0xFFB4A5FE), Color(0xFF8563EA) ] : [ Colors.transparent, Colors.transparent ],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
@@ -458,7 +464,7 @@ class _UpdateHoursWidgetState extends State<UpdateHoursWidget> {
                     "Add Hours",
                     style: GoogleFonts.raleway(
                       fontSize: 18,
-                      color: Colors.white
+                      color: minutes > 0 ? Colors.white : Colors.black.withOpacity(0.2)
                     ),
                   ),
                 ),
