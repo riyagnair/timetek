@@ -32,14 +32,55 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "TimeTek",
-        style: GoogleFonts.raleway(
-          fontSize: 36,
-          fontWeight: FontWeight.bold,
-          color: Colors.white
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: <Widget>[
+
+          Spacer(),
+
+          // Logo
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  "resources/icon.png",
+                  width: 50,
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:8.0),
+                child: Text(
+                  "TimeTek",
+                  style: GoogleFonts.raleway(
+                    fontSize: 46,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          Spacer(),
+
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              "v 1.0.0",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14
+              ),
+            ),
+          )
+
+        ],
       ),
     );
   }
