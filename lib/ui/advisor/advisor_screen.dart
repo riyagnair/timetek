@@ -116,6 +116,10 @@ class _AdviserScreenState extends State<AdviserScreen> {
 
   static DateFormat _dateFormat = DateFormat("MM/dd/yyyy");
 
+  final defaultStyle = GoogleFonts.raleway(
+    fontSize: 18,
+  );
+
   List<_ListItem> processItems(Map<String, DailyAllotment> allotments) {
 
     List<_ListItem> finalList = [];
@@ -157,7 +161,10 @@ class _AdviserScreenState extends State<AdviserScreen> {
 
         case STATUS.NONE:
           return Center(
-            child: Text("Hoo! No assignments to do."),
+            child: Text(
+              "Hoo! No assignments to do.",
+              style: defaultStyle,
+            ),
           );
 
         case STATUS.LOADING:
@@ -186,22 +193,34 @@ class _AdviserScreenState extends State<AdviserScreen> {
           }
 
           return Center(
-            child: Text("Hoo! No assignments to do."),
+            child: Text(
+              "Hoo! No assignments to do.",
+              style: defaultStyle,
+            ),
           );
 
         case STATUS.ERROR:
           return Center(
-            child: Text("Error loading assignments"),
+            child: Text(
+              "Error loading assignments",
+              style: defaultStyle,
+            ),
           );
           break;
 
         default: Center(
-          child: Text("Hoo! No assignments to do."),
+          child: Text(
+            "Hoo! No assignments to do.",
+            style: defaultStyle,
+          ),
         );
       }
 
       return Center(
-        child: Text("You don't have assignments yet."),
+        child: Text(
+          "You don't have assignments yet.",
+          style: defaultStyle,
+        ),
       );
 
     });

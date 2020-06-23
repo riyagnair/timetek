@@ -131,6 +131,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  final defaultStyle = GoogleFonts.raleway(
+    fontSize: 18,
+  );
+
   List<_ListItem> processItems(List<Assignment> items) {
     List<Assignment> l1 = items;// Hide finished>> .where((it) => (it.finished == null || it.finished == false)).toList();
 
@@ -171,7 +175,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
         case STATUS.NONE:
           return Center(
-            child: Text("You don't have assignments."),
+            child: Text(
+              "You don't have any assignments.",
+              style: defaultStyle,
+            ),
           );
 
         case STATUS.LOADING:
@@ -200,22 +207,34 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           return Center(
-            child: Text("You don't have assignments."),
+            child: Text(
+              "You don't have any assignments.",
+              style: defaultStyle,
+            ),
           );
 
         case STATUS.ERROR:
           return Center(
-            child: Text("Error loading assignments"),
+            child: Text(
+              "Error loading assignments",
+              style: defaultStyle,
+            ),
           );
           break;
 
         default: Center(
-          child: Text("You don't have assignments."),
+          child: Text(
+            "You don't have any assignments.",
+            style: defaultStyle,
+          ),
         );
       }
 
       return Center(
-        child: Text("You don't have assignments yet."),
+        child: Text(
+          "You don't have any assignments.",
+            style: defaultStyle,
+          ),
       );
 
     });

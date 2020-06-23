@@ -12,6 +12,10 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
 
+  final defaultStyle = GoogleFonts.raleway(
+    fontSize: 18,
+  );
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -29,7 +33,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
           // A text showing that there's no data available yet.
           return Center(
-            child: Text("You don't have any assignments yet."),
+            child: Text(
+              "You don't have any assignments.",
+              style: defaultStyle,
+            ),
           );
         } else {
 
