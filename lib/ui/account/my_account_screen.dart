@@ -12,32 +12,30 @@ class MyAccountScreen extends StatelessWidget{
     return Column(
       children: <Widget>[
 
-        // Profile image
-        Container(
-          padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(120)
-          ),
-          child: FutureBuilder(
-            future: UserDataProvider().getAvatar(),
-            builder: (_, AsyncSnapshot<String> snapshot) {
-              if(snapshot.hasData){
-                return CircleAvatar(
-                  backgroundImage: AssetImage(snapshot.data),
-                  radius: 60,
-                );
-              } else {
-                return CircleAvatar(
-                  child: Icon(
-                    Icons.account_circle,
-                    size: 30,
-                    color: Colors.black,
-                  ),
-                  radius: 60,
-                );
-              }
-            },
+        // Profile pic
+        ClipOval(
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            width: 120,
+            height: 120,
+            color: Colors.blueGrey,
+            child: FutureBuilder(
+              future: UserDataProvider().getAvatar(),
+              builder: (_, AsyncSnapshot<String> snapshot) {
+                if(snapshot.hasData){
+                  return Image.asset(snapshot.data);
+                } else {
+                  return CircleAvatar(
+                    child: Icon(
+                      Icons.account_circle,
+                      size: 30,
+                      color: Colors.black,
+                    ),
+                    radius: 60,
+                  );
+                }
+              },
+            ),
           ),
         ),
 
