@@ -202,7 +202,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
       case 0:
         return "Home";
       case 1:
-        return "Advisor";
+        return "Adviser";
       case 2:
         return "History";
       case 3:
