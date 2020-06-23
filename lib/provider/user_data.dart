@@ -20,6 +20,16 @@ class UserDataProvider {
     return prefs.getBool(_KEY_IS_LOGGED_IN) ?? false;
   }
 
+  Future<String> getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_KEY_NAME) ?? false;
+  }
+
+  Future<String> getAvatar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_KEY_AVATAR) ?? false;
+  }
+
   Future<bool> setLoggedIn(bool loggedIn, {String avatar, String name,}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(_KEY_NAME, name);

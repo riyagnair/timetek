@@ -17,25 +17,57 @@ class MyAccountScreen extends StatelessWidget{
           padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(140)
+            borderRadius: BorderRadius.circular(120)
           ),
-          child: CircleAvatar(
-            backgroundImage: AssetImage("resources/images/chandler.jpg"),
-            radius: 70,
+          child: FutureBuilder(
+            future: UserDataProvider().getAvatar(),
+            builder: (_, AsyncSnapshot<String> snapshot) {
+              if(snapshot.hasData){
+                return CircleAvatar(
+                  backgroundImage: AssetImage(snapshot.data),
+                  radius: 60,
+                );
+              } else {
+                return CircleAvatar(
+                  child: Icon(
+                    Icons.account_circle,
+                    size: 30,
+                    color: Colors.black,
+                  ),
+                  radius: 60,
+                );
+              }
+            },
           ),
         ),
 
         // Spacer
         SizedBox(height: 8),
 
-        // User name
-        Text(
-          "Chandler Bing",
-          style: GoogleFonts.raleway(
-            fontSize: 22,
-            fontWeight: FontWeight.bold
-          ),
+        FutureBuilder(
+          future: UserDataProvider().getName(),
+          builder: (_, AsyncSnapshot<String> snapshot) {
+            if(snapshot.hasData){
+              return Text(
+                snapshot.data,
+                style: GoogleFonts.raleway(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold
+                ),
+              );
+            } else {
+              return Text(
+                "",
+                style: GoogleFonts.raleway(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold
+                ),
+              );
+            }
+          },
         ),
+
+        // User name
 
         // Spacer
         SizedBox(height: 32),
