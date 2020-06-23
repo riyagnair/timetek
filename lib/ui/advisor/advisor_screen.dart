@@ -114,7 +114,7 @@ class AdviserScreen extends StatefulWidget {
 
 class _AdviserScreenState extends State<AdviserScreen> {
 
-  static DateFormat _dateFormat = DateFormat("MMM dd");
+  static DateFormat _dateFormat = DateFormat("MM/dd/yyyy");
 
   List<_ListItem> processItems(Map<String, DailyAllotment> allotments) {
 

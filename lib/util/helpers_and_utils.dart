@@ -29,4 +29,4 @@ Future showAlert(BuildContext context, String title, String body, { Map<String, 
   );
 }
 
-String formatDate(DateTime date) => DateFormat("yyyy-MM-dd").format(date);
+String formatDate(DateTime date) => DateFormat("MM/dd/yyyy").format(date);

@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
     l1.forEach((it) => debugPrint(it.endDate.toIso8601String()));
 
     LinkedHashSet<String> set = LinkedHashSet();
-    l1.forEach((it) => set.add(DateFormat("MMM dd").format(it.endDate)));
+    l1.forEach((it) => set.add(DateFormat("MM/dd/yyyy").format(it.endDate)));
 
     debugPrint("Set is $set");
 
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     set.forEach((it) {
       finalList.add(_HeaderItem("Due on $it"));
-      l1.where((a) => DateFormat("MMM dd").format(a.endDate) == it).forEach((a) => finalList.add(_AssignmentItem(a)));
+      l1.where((a) => DateFormat("MM/dd/yyyy").format(a.endDate) == it).forEach((a) => finalList.add(_AssignmentItem(a)));
     });
 
     debugPrint("Final List $finalList");

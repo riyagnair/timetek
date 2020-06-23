@@ -41,7 +41,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               return ListTile(
                 onTap: () {},
                 title: Text(item.title, style: GoogleFonts.raleway(color: Colors.white)),
-                subtitle: Text("Due on ${DateFormat("yyyy-MM-dd").format(item.endDate)}",
+                subtitle: Text("Due on ${DateFormat("MM/dd/yyyy").format(item.endDate)}",
                     style: GoogleFonts.raleway(color: Colors.grey)),
                 leading: Icon(Icons.today),
                 trailing: item.finished != null && item.finished

@@ -116,7 +116,7 @@ class Adviser {
     );
   }
 
-  static DateFormat _indexFormat = DateFormat("yyyy-MM-dd");
+  static DateFormat _indexFormat = DateFormat("MM/dd/yyyy");
   String _indexOf(DateTime dateTime) => _indexFormat.format(dateTime);
 
 }

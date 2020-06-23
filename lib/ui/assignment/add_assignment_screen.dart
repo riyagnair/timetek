@@ -127,7 +127,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       _assignment.notes = text;
                     },
                     decoration: InputDecoration(
-                      hintText: "Assignment Title",
+                      hintText: "Assignment Details",
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(8),
                     ),
@@ -181,7 +181,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                           Text(
                             _assignment.startDate == null
                                 ? "Start Date"
-                                : DateFormat("yyyy-MM-dd").format(_assignment.startDate),
+                                : DateFormat("MM/dd/yyyy").format(_assignment.startDate),
                             style: TextStyle(
                               fontSize: 16,
                               color: Theme.of(context).primaryColor,
@@ -214,7 +214,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                           Text(
                             _assignment.endDate == null
                                 ? "End Date"
-                                : DateFormat("yyyy-MM-dd").format(_assignment.endDate),
+                                : DateFormat("MM/dd/yyyy").format(_assignment.endDate),
                             style: TextStyle(
                               fontSize: 16,
                               color: Theme.of(context).primaryColor,
